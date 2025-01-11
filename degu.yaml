@@ -23,4 +23,4 @@ releases:
   - version: 0.2.3
     downloads:
       - platform: macOS
-        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/Wallpaper%20A%20Day.app.zip
+        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/Wallpaper.a.Day.app.zip
