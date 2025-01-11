@@ -2,25 +2,25 @@
 # information about projects, tools in a decentralized way.
 # for a usecase, check out apps.robbb.in
 
-name: Letters
+name: Wallpaper a Day
 authors:
   - ref: https://gist.githubusercontent.com/RobinNaumann/7d9d5b8902a697cda1f0ba2c5b7234c6/raw/46ebed8489de7e4458335ae434fee986d594504b/robin.degu.yaml
     role: developer
 platforms:
   - macOS
-tagline: simple font manager for macOS
+tagline: daily wallpapers for your mac
 about: |
-  Letters is a simple font manager for macOS. It allows you to preview and install fonts on your system. It is built with Flutter and offers access to Google Fonts.
-icon: https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/icon.png
-source: https://github.com/RobinNaumann/letters
+  Wallpaper a Day is a simple macOS app that changes your wallpaper every day. 
+  Discover new wallpapers from multiple sources that also provide additional information about the images.
+icon: https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/icon.png
+source: https://github.com/RobinNaumann/wallpaper_a_day
 donate: https://www.buymeacoffee.com/robinnaumann
 screenshots:
-  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_1.png
-  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_2.png
-  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_3.png
-  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_4.png
+  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_01.png
+  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_02.png
+  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_03.png
 releases:
-  - version: 0.2.0
+  - version: 0.2.3
     downloads:
       - platform: macOS
-        url: https://github.com/RobinNaumann/letters/releases/latest/download/Letters.app.zip
+        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/Wallpaper%20A%20Day.app.zip
