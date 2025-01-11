@@ -1,0 +1,36 @@
+name: wallpaper_a_day
+description: "A new Flutter project."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_acrylic: ^1.1.4
+  macos_ui: 2.0.9
+  elbe: ^0.2.5
+  moewe: ^0.2.9
+  http: ^1.2.2
+  url_launcher: ^6.3.1
+  html: ^0.15.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.1
+  change_app_package_name: ^1.4.0
+
+flutter:
+  uses-material-design: true
+
+flutter_launcher_icons:
+  macos:
+    generate: true
+    image_path: "assets/icon_macos.png"

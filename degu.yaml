@@ -1,0 +1,26 @@
+# dego is a simple knowledge management tool. It allows me to publish
+# information about projects, tools in a decentralized way.
+# for a usecase, check out apps.robbb.in
+
+name: Letters
+authors:
+  - ref: https://gist.githubusercontent.com/RobinNaumann/7d9d5b8902a697cda1f0ba2c5b7234c6/raw/46ebed8489de7e4458335ae434fee986d594504b/robin.degu.yaml
+    role: developer
+platforms:
+  - macOS
+tagline: simple font manager for macOS
+about: |
+  Letters is a simple font manager for macOS. It allows you to preview and install fonts on your system. It is built with Flutter and offers access to Google Fonts.
+icon: https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/icon.png
+source: https://github.com/RobinNaumann/letters
+donate: https://www.buymeacoffee.com/robinnaumann
+screenshots:
+  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_1.png
+  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_2.png
+  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_3.png
+  - https://raw.githubusercontent.com/RobinNaumann/letters/main/assets/screenshots/scs_4.png
+releases:
+  - version: 0.2.0
+    downloads:
+      - platform: macOS
+        url: https://github.com/RobinNaumann/letters/releases/latest/download/Letters.app.zip
