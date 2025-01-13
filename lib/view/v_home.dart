@@ -98,8 +98,11 @@ class HomeView extends StatelessWidget {
                                   : CurrentImage(model: data.current!),
                             ),
                             Padded.all(
-                              child: Text(
-                                  "${settings.provider.label} - ${settings.series.label}"),
+                              child: _ReloadBtn(
+                                label:
+                                    "${settings.provider.label} - ${settings.series.label}",
+                                onTap: () => bit.refresh(),
+                              ),
                             )
                           ],
                         ),
@@ -112,3 +115,59 @@ class HomeView extends StatelessWidget {
 
 Widget iconButton({required IconData icon, required void Function() onTap}) =>
     GestureDetector(onTap: onTap, child: Icon(icon));
+
+class _ReloadBtn extends StatefulWidget {
+  final String label;
+  final void Function() onTap;
+  const _ReloadBtn({super.key, required this.label, required this.onTap});
+
+  @override
+  State<_ReloadBtn> createState() => __ReloadBtnState();
+}
+
+class __ReloadBtnState extends State<_ReloadBtn>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    _controller.forward(from: 0.0);
+    widget.onTap();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padded.only(
+              top: .25,
+              child: RotationTransition(
+                turns: _controller,
+                child: Padded.only(
+                  bottom: .25,
+                  child: const Icon(ApfelIcons.refresh),
+                ),
+              )),
+          Text(widget.label),
+        ].spaced(amount: .5),
+      ),
+    );
+  }
+}

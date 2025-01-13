@@ -20,7 +20,7 @@ screenshots:
   - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_02.png
   - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_03.png
 releases:
-  - version: 0.2.3
+  - version: 0.2.4
     downloads:
       - platform: macOS
         url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/Wallpaper.a.Day.app.zip

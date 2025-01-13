@@ -53,16 +53,12 @@ class StorageService {
   }
 
   Future<void> refresh(ProviderModel provider, String series) async {
-    try {
-      final List<ImageModel> existing = await list(provider.id, series);
-      final ImageModel latest = await provider.fetch(provider, series);
+    final List<ImageModel> existing = await list(provider.id, series);
+    final ImageModel latest = await provider.fetch(provider, series);
 
-      if (existing.isEmpty || existing.last.id != latest.id) {
-        await save(latest);
-        print("Saved new image: ${latest.id}");
-      }
-    } catch (e) {
-      print("could not refresh: $e");
+    if (existing.isEmpty || existing.last.id != latest.id) {
+      await save(latest);
+      print("Saved new image: ${latest.id}");
     }
   }
 

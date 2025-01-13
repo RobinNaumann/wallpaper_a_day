@@ -6,10 +6,9 @@ import 'package:moewe/moewe.dart';
 import 'package:wallpaper_a_day/bit/b_settings.dart';
 import 'package:wallpaper_a_day/model/m_image.dart';
 import 'package:wallpaper_a_day/model/m_provider.dart';
+import 'package:wallpaper_a_day/service/s_refresh.dart';
 import 'package:wallpaper_a_day/service/s_storage.dart';
 import 'package:wallpaper_a_day/service/s_wallpaper.dart';
-
-UnixMs _lastCheck = 0;
 
 class SeriesData extends JsonModel {
   final List<ImageModel> images;
@@ -30,7 +29,7 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
   final String? id;
 
   late Timer _wallTimer;
-  late Timer _refreshTimer;
+  late RefreshScheduler _scheduler;
 
   SeriesBit(this.provider, this.series, this.id)
       : super.worker((_) async {
@@ -46,24 +45,21 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
     _set();
     _wallTimer = Timer.periodic(const Duration(seconds: 1), (_) => _set());
 
-    /// refresh the feed at 12:02am
-    refresh();
-    _refreshTimer = Timer.periodic(const Duration(minutes: 4), (_) {
-      final now = DateTime.now().asUnixMs;
-      if (_day(_lastCheck) == _day(now - 1000 * 60)) return;
-      _lastCheck = now;
-      refresh();
-    });
+    _scheduler = RefreshScheduler(
+      provider: provider,
+      series: series.id,
+      worker: () async {
+        _logLoading(provider.id, series.id);
+        await StorageService.i.refresh(provider, series.id);
+        reload();
+      },
+    );
   }
 
   void _set() =>
       state.whenOrNull(onData: (d) => WallpaperService.i.set(d.current?.file));
 
-  refresh() async {
-    _logLoading(provider.id, series.id);
-    await StorageService.i.refresh(provider, series.id);
-    reload();
-  }
+  refresh() => _scheduler.force();
 
   previous(BuildContext c) => _setOffset(c, -1);
   next(BuildContext c) => _setOffset(c, 1);
@@ -85,7 +81,7 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
   @override
   void dispose() {
     _wallTimer.cancel();
-    _refreshTimer.cancel();
+    _scheduler.dispose();
     super.dispose();
   }
 }

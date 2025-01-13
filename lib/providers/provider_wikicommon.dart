@@ -32,7 +32,8 @@ final ProviderModel wikiCommonsProvider = ProviderModel(
       final feed =
           parse((await fetch(_queryUrl + series)).replaceAll("-<", "<"));
       final html = unescapeHtml(feed
-          .querySelectorAll("entry")[2] //.last
+          .querySelectorAll("entry")
+          .last
           .querySelector("summary")!
           .innerHtml);
       final entry = parse('<html><body>$html</body></html>');
