@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:elbe/elbe.dart';
-import 'package:elbe/util/json_tools.dart';
 import 'package:wallpaper_a_day/model/m_provider.dart';
 
 class _NextRefresh {
@@ -33,13 +32,13 @@ class RefreshScheduler {
   }
 
   void _refresh() {
-    if ((_next[_key]?.time ?? 0) < DateTime.now().asUnixMs) force();
+    if ((_next[_key]?.time ?? UnixMs.zero) < UnixMs.now) force();
   }
 
   String get _key => '${provider.id}.$series';
 
   Future<void> force() async {
-    final now = DateTime.now().asUnixMs;
+    final now = UnixMs.now;
     final tomorrow = _tomorrow();
     try {
       await worker();
@@ -47,7 +46,7 @@ class RefreshScheduler {
     } catch (e) {
       final nextFail = (_next[_key]?.failCount ?? 0) + 1;
       _next[_key] = _NextRefresh(
-          Math.min(tomorrow, now + 1000 * 60 * 2 * nextFail), nextFail);
+          Math.min(tomorrow, UnixMs(now + 1000 * 60 * 2 * nextFail)), nextFail);
       throw ElbeError("REF_01", "could not refresh", cause: e);
     }
   }
@@ -56,7 +55,7 @@ class RefreshScheduler {
     _timer.cancel();
   }
 
-  int _tomorrow() {
+  UnixMs _tomorrow() {
     final rdmDelay = Random().nextInt(2 * 60) + 60;
     final now = DateTime.now();
     final tomorrow = DateTime(now.year, now.month, now.day + 1, 0, 0, rdmDelay);

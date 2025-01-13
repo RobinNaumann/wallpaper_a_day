@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_acrylic: ^1.1.4
   macos_ui: 2.0.9
-  elbe: ^0.2.5
+  elbe: ^0.2.8
   moewe: ^0.2.9
   http: ^1.2.2
   url_launcher: ^6.3.1
