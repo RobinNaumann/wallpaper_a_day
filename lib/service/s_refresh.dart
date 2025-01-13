@@ -28,22 +28,24 @@ class RefreshScheduler {
   }) {
     _instance?.dispose();
     _instance = this;
-    _timer = Timer.periodic(interval, (_) {
-      if ((_next[_key]?.time ?? 0) > DateTime.now().asUnixMs) force();
-    });
+    _timer = Timer.periodic(interval, (_) => _refresh());
+    _refresh();
+  }
+
+  void _refresh() {
+    if ((_next[_key]?.time ?? 0) < DateTime.now().asUnixMs) force();
   }
 
   String get _key => '${provider.id}.$series';
 
   Future<void> force() async {
-    final next = _next[_key];
     final now = DateTime.now().asUnixMs;
     final tomorrow = _tomorrow();
     try {
       await worker();
       _next[_key] = _NextRefresh(tomorrow, 0);
     } catch (e) {
-      final nextFail = (next?.failCount ?? 0) + 1;
+      final nextFail = (_next[_key]?.failCount ?? 0) + 1;
       _next[_key] = _NextRefresh(
           Math.min(tomorrow, now + 1000 * 60 * 2 * nextFail), nextFail);
       throw ElbeError("REF_01", "could not refresh", cause: e);

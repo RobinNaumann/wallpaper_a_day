@@ -77,7 +77,8 @@ class SettingsPage extends StatelessWidget {
                       GestureDetector(
                           onTap: () => launchUrlString(
                               "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text"),
-                          child: const Text.bodyS("available under GPL-3.0",
+                          child: Text.bodyS(
+                              "v${moewe.appVersion ?? "?"}+${moewe.buildNumber ?? "?"}, available under GPL-3.0",
                               textAlign: TextAlign.center)),
                     ].spaced(amount: .125),
                   ),

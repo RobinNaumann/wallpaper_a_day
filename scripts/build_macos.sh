@@ -21,7 +21,7 @@ entitlements="./macos/Runner/Release.entitlements"
 codesign --force --options=runtime --deep --entitlements "$entitlements" --sign "$identity" "$macos_dir/$app.app" > $fOUT
 
 
-echo "\x1b[34;1mmacOS: 3/5: notarizing... (Apple may take up to 1h)\x1b[0m"
+echo "\x1b[34;1mmacOS: 3/5: notarizing... (Apple may take up to 1h on first run)\x1b[0m"
 ditto -c -k --sequesterRsrc --keepParent "$macos_dir/$app.app" "$macos_dir/$app.zip"
 xcrun notarytool submit "$macos_dir/$app.zip" \
   --keychain-profile "$keychain" \

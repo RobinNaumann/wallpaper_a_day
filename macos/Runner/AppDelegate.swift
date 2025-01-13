@@ -47,9 +47,15 @@ class AppDelegate: FlutterAppDelegate {
 
   private func setWallpaper(path: String, result: @escaping FlutterResult) {
     let url = URL(fileURLWithPath: path)
+    /// set the wallpaper on ALL screens
     do {
-      try NSWorkspace.shared.setDesktopImageURL(url, for: NSScreen.main!, options: [:])
+      let screens = NSScreen.screens
+      for screen in screens {
+          try NSWorkspace.shared.setDesktopImageURL(url, for: screen, options: [:])
+      }
       result(nil)
+      //old: try NSWorkspace.shared.setDesktopImageURL(url, for: NSScreen.main!, options: [:])
+      
     } catch {
       result(FlutterError(code: "UNAVAILABLE", message: "Setting wallpaper failed", details: error.localizedDescription))
     }

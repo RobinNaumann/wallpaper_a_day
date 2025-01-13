@@ -1,16 +1,28 @@
-# wallpaper_a_day
+# Wallpaper a Day _<img src="./assets/icon.png" width="40" align="right"/>_
 
-A new Flutter project.
+Wallpaper a Day is a simple macOS app that changes your wallpaper every day. Discover new wallpapers from multiple sources that also provide additional information about the images.
 
-## Getting Started
+### wallpaper providers
 
-This project is a starting point for a Flutter application.
+- [Bing](https://www.bing.com) (multiple locales)
+- [NASA APOD](https://apod.nasa.gov/apod/)
+- [WikiMedia](https://commons.wikimedia.org/wiki/Main_Page) (multiple locales)
 
-A few resources to get you started if this is your first Flutter project:
+### Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+_<img src="./assets/screenshot/sc_wad_01.png" height="250" />_
+_<img src="./assets/screenshot/sc_wad_02.png" height="250" />_
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Install
+
+1. download it [here](https://apps.robbb.in/wallpaper_a_day) for macOS
+
+### contribute
+
+- you can build the application yourself using [Flutter](https://flutter.dev)
+- feel free to reach out if you find issues or have suggestions
+
+Have a great day,<br>
+Yours, Robin
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/robinnaumann)

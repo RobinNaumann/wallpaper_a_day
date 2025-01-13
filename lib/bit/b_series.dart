@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:elbe/elbe.dart';
 import 'package:moewe/moewe.dart';
@@ -43,13 +42,14 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
               index == -1 ? (list.isNotEmpty ? list.length - 1 : null) : index);
         }) {
     _set();
-    _wallTimer = Timer.periodic(const Duration(seconds: 1), (_) => _set());
+    _wallTimer = Timer.periodic(const Duration(seconds: 2), (_) => _set());
 
     _scheduler = RefreshScheduler(
       provider: provider,
       series: series.id,
       worker: () async {
-        _logLoading(provider.id, series.id);
+        moewe.event("fetch",
+            data: {"provider": provider.id, "series": series.id});
         await StorageService.i.refresh(provider, series.id);
         reload();
       },
@@ -84,14 +84,4 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
     _scheduler.dispose();
     super.dispose();
   }
-}
-
-Future<void> _logLoading(String provider, String series) async {
-  await Future.delayed(Duration(milliseconds: Random().nextInt(60 * 1000)));
-  moewe.event("fetching", data: {"provider": provider, "series": series});
-}
-
-String _day(UnixMs d) {
-  final date = DateTime.fromMillisecondsSinceEpoch(d);
-  return "${date.year}-${date.month}-${date.day}";
 }
