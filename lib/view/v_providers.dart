@@ -71,7 +71,6 @@ class ProviderSnippet extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: MacosPopupButton<ProviderSeries>(
                               value: selectedSeries ?? provider.series.first,
-                              popupColor: Colors.black,
                               items: [
                                 for (final s in provider.series)
                                   MacosPopupMenuItem(

@@ -7,8 +7,8 @@ class StatusBarController {
     
     init(_ popover: NSPopover) {
         self.popover = popover
-        statusBar = NSStatusBar.init()
-        statusItem = statusBar.statusItem(withLength: 38.0)
+        statusBar = NSStatusBar.system
+        statusItem = statusBar.statusItem(withLength: 18.0)
         
         if let statusBarButton = statusItem.button {
             statusBarButton.image = #imageLiteral(resourceName: "menu_icon") //change this to your desired image
