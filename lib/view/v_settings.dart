@@ -4,6 +4,7 @@ import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:moewe/moewe.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:wallpaper_a_day/bit/b_autostart.dart';
 import 'package:wallpaper_a_day/service/s_storage.dart';
 import 'package:wallpaper_a_day/util/icon_btn.dart';
 import 'package:wallpaper_a_day/view/v_providers.dart';
@@ -65,6 +66,8 @@ class SettingsPage extends StatelessWidget {
                   const Spaced.vertical(2),
                   const DeleteAllButton(),
                   const Spaced.vertical(1),
+                  const AutostartButton(),
+                  const Spaced.vertical(1),
                   ATextButton(label: "quit", onTap: () => exit(0)),
                   const Spaced.vertical(),
                   Column(
@@ -87,6 +90,21 @@ class SettingsPage extends StatelessWidget {
         }),
       ],
     );
+  }
+}
+
+class AutostartButton extends StatelessWidget {
+  const AutostartButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AutostartBit.builder(
+        onData: (bit, start) => ATextButton(
+            icon: start ?? false
+                ? ApfelIcons.checkmark_circle
+                : ApfelIcons.circle,
+            label: "start on login",
+            onTap: context.bit<AutostartBit>().toggle));
   }
 }
 

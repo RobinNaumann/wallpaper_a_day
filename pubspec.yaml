@@ -1,9 +1,9 @@
 name: wallpaper_a_day
-description: "A new Flutter project."
+description: "A wallpaper app that changes your wallpaper every day."
 
 publish_to: "none"
 
-version: 0.2.5+5
+version: 0.2.6+6
 
 environment:
   sdk: ^3.5.4

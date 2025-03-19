@@ -3,6 +3,7 @@ import 'package:flutter_acrylic/window.dart';
 import 'package:flutter_acrylic/window_effect.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:moewe/moewe.dart';
+import 'package:wallpaper_a_day/bit/b_autostart.dart';
 import 'package:wallpaper_a_day/bit/b_settings.dart';
 import 'package:wallpaper_a_day/util/brightness_observer.dart';
 
@@ -33,21 +34,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Theme(
-        data: ThemeData.preset(
-            remSize: 14,
-            titleFont: "Helvetica Neue",
-            titleVariant: TypeVariants.bold),
-        child: BrightnessObserver(
+      data: ThemeData.preset(
+          remSize: 14,
+          titleFont: "Helvetica Neue",
+          titleVariant: TypeVariants.bold),
+      child: BrightnessObserver(
           child: BitProvider(
               create: (_) => SettingsBit(),
-              child: MacosApp(
-                  title: 'Wallpaper',
-                  builder: (_, __) => Navigator(
-                        initialRoute: "/",
-                        onGenerateRoute: (settings) => MaterialPageRoute(
-                            builder: (_) => const HomeView(),
-                            settings: settings),
-                      ))),
-        ),
-      );
+              child: BitProvider(
+                  create: (_) => AutostartBit(),
+                  child: MacosApp(
+                      title: 'Wallpaper',
+                      builder: (_, __) => Navigator(
+                            initialRoute: "/",
+                            onGenerateRoute: (settings) => MaterialPageRoute(
+                                builder: (_) => const HomeView(),
+                                settings: settings),
+                          ))))));
 }

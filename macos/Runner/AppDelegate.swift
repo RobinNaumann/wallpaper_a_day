@@ -23,9 +23,9 @@ class AppDelegate: FlutterAppDelegate {
   override func applicationDidFinishLaunching(_ aNotification: Notification) {
 
     // add to login items:
-    do {
-      try SMAppService.mainApp.register()
-    } catch {}
+    //do {
+    //  try SMAppService.mainApp.register()
+    //} catch {}
 
     let controller: FlutterViewController =
       mainFlutterWindow?.contentViewController as! FlutterViewController
@@ -45,14 +45,41 @@ class AppDelegate: FlutterAppDelegate {
       name: "in.robbb.wad", binaryMessenger: controller.engine.binaryMessenger)
     methodChannel.setMethodCallHandler {
       [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) in
-      if call.method == "setWallpaper", let args = call.arguments as? [String: Any],
-        let path = args["path"] as? String
-      {
-        self?.setWallpaper(path: path, result: result)
+
+      if let args = call.arguments as? [String: Any] {
+        self?.handleFlutterCall(method: call.method, args: args, result: result)
       } else {
         result(FlutterMethodNotImplemented)
       }
     }
+  }
+
+  private func handleFlutterCall(
+    method: String, args: [String: Any], result: @escaping FlutterResult
+  ) {
+    if method == "setWallpaper" {
+      return setWallpaper(path: args["path"] as! String, result: result)
+    }
+
+    if method == "setAutostart" {
+      do {
+        if args["on_login"] as! Bool {
+          try SMAppService.mainApp.register()
+        } else {
+          try SMAppService.mainApp.unregister()
+        }
+      } catch {}
+      result(nil)
+      return
+    }
+
+    if method == "getAutostart" {
+      result(SMAppService.mainApp.status == .enabled)
+      return
+    }
+
+    result(FlutterMethodNotImplemented)
+
   }
 
   private func setWallpaper(path: String, result: @escaping FlutterResult) {
