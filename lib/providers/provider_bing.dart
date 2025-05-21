@@ -57,7 +57,7 @@ final ProviderModel bingProvider = ProviderModel(
           "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=$series";
       JsonMap d = json.decode(await fetch(url))["images"][0];
 
-      final iurl = "https://www.bing.com${d.asCast("url")}";
+      final iurl = "https://www.bing.com${d.asCast("urlbase")}_UHD.jpg";
       final type =
           Uri.parse(iurl).queryParameters["id"]?.split(".").lastOrNull ?? "jpg";
       return ImageModel(
