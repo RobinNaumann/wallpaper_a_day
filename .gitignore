@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # built distribution files
-/dist/
+dist/
