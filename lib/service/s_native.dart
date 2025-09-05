@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:elbe/elbe.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
-import 'package:screen_retriever/screen_retriever.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:tray_manager/tray_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 abstract class NativeService {
   Future<void> setWallpaper(File file);
@@ -72,17 +70,18 @@ class WindowsNativeService extends NativeService {
   Widget base(BuildContext context, Widget child) => Padded.all(
         value: .5,
         child: Container(
-          clipBehavior: Clip.hardEdge ,
-          decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(50),
-              blurRadius: 8,
-              offset: Offset(0, 4),
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
-          ],
-        ), child: child),
+            child: child),
       );
 
   @override
@@ -122,8 +121,6 @@ Future<T?> _invoke<T>(
     return null;
   }
 }
-
-
 
 class _WindowsTrayHandler with TrayListener, WindowListener {
   @override

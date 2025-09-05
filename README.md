@@ -1,6 +1,6 @@
 # Wallpaper a Day _<img src="./assets/icon.png" width="40" align="right"/>_
 
-Wallpaper a Day is a simple macOS app that changes your wallpaper every day. Discover new wallpapers from multiple sources that also provide additional information about the images.
+Wallpaper a Day is a simple macOS/Windows app that changes your wallpaper every day. Discover new wallpapers from multiple sources that also provide additional information about the images.
 
 ### wallpaper providers
 
@@ -12,10 +12,11 @@ Wallpaper a Day is a simple macOS app that changes your wallpaper every day. Dis
 
 _<img src="./assets/screenshot/sc_wad_01.png" height="250" />_
 _<img src="./assets/screenshot/sc_wad_02.png" height="250" />_
+_<img src="./assets/screenshot/sc_wad_win.png" height="250" />_
 
 ### Install
 
-1. download it [here](https://apps.robbb.in/wallpaper_a_day) for macOS
+1. download it [here](https://apps.robbb.in/wallpaper_a_day) for macOS or Windows
 
 ### contribute
 

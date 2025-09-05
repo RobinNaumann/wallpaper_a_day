@@ -1,7 +1,6 @@
 import 'package:elbe/elbe.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wallpaper_a_day/model/m_image.dart';
-import 'package:wallpaper_a_day/util/img_brightness.dart';
 
 import '../util/icon_btn.dart';
 
@@ -14,10 +13,10 @@ class CurrentImage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FutureBuilder(
+        /*FutureBuilder(
             future: getImgLuminance(model.file.path),
             builder: (_, luminance) =>
-                Card(child: Text(luminance.data.toString()))),
+                Card(child: Text(luminance.data.toString()))),*/
         ClipRRect(
           borderRadius: GeometryTheme.of(context).border.borderRadius ??
               BorderRadius.zero,
