@@ -27,4 +27,4 @@ releases:
       - platform: macOS
         url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/Wallpaper.a.Day.app.zip
       - platform: Windows
-        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/ WallpaperADay-Installer.exe
+        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/WallpaperADay-Installer.exe
