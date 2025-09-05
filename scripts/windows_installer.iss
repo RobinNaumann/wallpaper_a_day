@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Wallpaper A Day"
-#define MyAppVersion "0.2.7"
+#define MyAppVersion "0.2.8"
 #define MyAppPublisher "Robin Naumann"
 #define MyAppURL "apps.robbb.in"
 #define MyAppExeName "wallpaper_a_day.exe"

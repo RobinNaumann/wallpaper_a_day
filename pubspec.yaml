@@ -3,7 +3,7 @@ description: "A wallpaper app that changes your wallpaper every day."
 
 publish_to: "none"
 
-version: 0.2.7+8
+version: 0.2.8+9
 
 environment:
   sdk: ^3.5.4

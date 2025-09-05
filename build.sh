@@ -6,8 +6,6 @@ package="in.robbb.wad"
 set -e # exit on error
 clear
 
-start .\\dist
-
 # build for the current platform
 platform=$(uname -s)
 if [ "$platform" = "Darwin" ]; then platform="macos"

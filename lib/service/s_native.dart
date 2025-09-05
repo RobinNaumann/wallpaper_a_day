@@ -71,7 +71,18 @@ class WindowsNativeService extends NativeService {
   @override
   Widget base(BuildContext context, Widget child) => Padded.all(
         value: .5,
-        child: ClipRRect(borderRadius: BorderRadius.circular(8), child: child),
+        child: Container(
+          clipBehavior: Clip.hardEdge ,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(50),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ), child: child),
       );
 
   @override
