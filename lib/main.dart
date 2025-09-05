@@ -5,16 +5,16 @@ import 'package:macos_ui/macos_ui.dart';
 import 'package:moewe/moewe.dart';
 import 'package:wallpaper_a_day/bit/b_autostart.dart';
 import 'package:wallpaper_a_day/bit/b_settings.dart';
+import 'package:wallpaper_a_day/service/s_native.dart';
 import 'package:wallpaper_a_day/util/brightness_observer.dart';
+import 'package:wallpaper_a_day/view/v_settings.dart';
 
 import 'view/v_home.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Window.initialize();
+  await AppInfoService.init();
   final pI = await tryCatchAsync(() => PackageInfo.fromPlatform());
-
-  print(pI?.version);
 
   await Moewe(
           host: "open.moewe.app",
@@ -24,7 +24,8 @@ main() async {
           buildNumber: int.tryParse(pI?.buildNumber ?? ""))
       .init();
 
-  await Window.setEffect(effect: WindowEffect.transparent, dark: false);
+  await NativeService.i.setupWindow();
+
   moewe.events.appOpen();
   runApp(const MyApp());
 }
@@ -43,12 +44,16 @@ class MyApp extends StatelessWidget {
               create: (_) => SettingsBit(),
               child: BitProvider(
                   create: (_) => AutostartBit(),
-                  child: MacosApp(
+                  child:  MacosApp(
                       title: 'Wallpaper',
-                      builder: (_, __) => Navigator(
+                      builder: (c, __) => NativeService.i.base(c, Navigator(
                             initialRoute: "/",
-                            onGenerateRoute: (settings) => MaterialPageRoute(
-                                builder: (_) => const HomeView(),
+                            onGenerateRoute: (settings) => PageRouteBuilder(
+                                pageBuilder: (c,_,__) => NativeService.i.pageBase(c,settings.name == "/"
+                                    ? const HomeView()
+                                    : const SettingsPage()),
                                 settings: settings),
-                          ))))));
+                          )))))));
 }
+
+

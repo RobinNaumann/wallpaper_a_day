@@ -31,12 +31,11 @@ class HomeView extends StatelessWidget {
                       PushButton(
                           onPressed: () => sbit.deleteConfig(),
                           controlSize: ControlSize.large,
-                          child:
-                              Text("reset ${settings.provider.label} config")),
+                          child: Text("reset ${settings.provider.label} config")),
                       Padded.only(
                         top: 1,
                         child: TextButton(
-                            onPressed: () => SettingsPage.routeTo(context),
+                            onPressed: () => Navigator.of(context).pushNamed("/settings"),
                             child: const Text("open settings")),
                       )
                     ].spaced(),
@@ -48,8 +47,8 @@ class HomeView extends StatelessWidget {
                         children: [
                           AIconButton(
                               icon: ApfelIcons.settings,
-                              tooltip: "previous",
-                              onTap: () => SettingsPage.routeTo(context)),
+                              tooltip: "settings",
+                              onTap: () => Navigator.of(context).pushNamed("/settings")),
                           AIconButton(
                               icon: ApfelIcons.chevron_left,
                               tooltip: "previous",

@@ -5,6 +5,7 @@ import 'package:macos_ui/macos_ui.dart';
 import 'package:moewe/moewe.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wallpaper_a_day/bit/b_autostart.dart';
+import 'package:wallpaper_a_day/service/s_native.dart';
 import 'package:wallpaper_a_day/service/s_storage.dart';
 import 'package:wallpaper_a_day/util/icon_btn.dart';
 import 'package:wallpaper_a_day/view/v_providers.dart';
@@ -12,22 +13,10 @@ import 'package:wallpaper_a_day/view/v_providers.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
-  static void routeTo(BuildContext context) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => SettingsPage(),
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
-      ),
-    );
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
-    return MacosScaffold(
-      children: [
-        ContentArea(builder: (context, _) {
-          return SingleChildScrollView(
+    return SingleChildScrollView(
             padding: const RemInsets.all(1).toPixel(context),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -87,10 +76,9 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ]),
           );
-        }),
-      ],
-    );
-  }
+        }
+  
+  
 }
 
 class AutostartButton extends StatelessWidget {

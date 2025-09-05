@@ -3,25 +3,35 @@ label="Wallpaper a Day"
 package="in.robbb.wad"
 
 # script:
-
 set -e # exit on error
 clear
 
-echo "\x1b[32;1mRunning Plugins\x1b[0m"
+start .\\dist
+
+# build for the current platform
+platform=$(uname -s)
+if [ "$platform" = "Darwin" ]; then platform="macos"
+elif [[ "$platform" == MINGW* || "$platform" == MSYS* || "$platform" == CYGWIN* ]]; then platform="windows"
+else
+  echo "Unknown platform: $platform"
+  exit 1
+fi
+
+echo "Running Plugins"
 flutter pub get
 dart run flutter_launcher_icons
 dart run change_app_package_name:main $package
 
-echo "\x1b[34;1mcleaning output...\x1b[0m"
+echo "cleaning output..."
 rm -rf ./dist
 mkdir ./dist
-echo "\x1b[34;1mbuilding app for macOS\x1b[0m"
+echo "building app for the platforms"
 
-#./scripts/build_android.sh $label 
-./scripts/build_macos.sh "$label"
+# build for the current platform
+./scripts/build_${platform}.sh "$label"
 
-#echo "\x1b[34;1mbuilding app for XCode Release\x1b[0m"
-#flutter build macos --release
-
-echo "\x1b[32;1mDone! opening dist directory\x1b[0m"
-open ./dist
+echo "Done! opening dist directory"
+# open the dist directory
+if [ "$platform" = "macos" ]; then open ./dist
+elif [ "$platform" = "windows" ]; then start .\\dist
+fi

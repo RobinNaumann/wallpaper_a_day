@@ -9,6 +9,6 @@ class WallpaperService {
 
   Future<void> set(File? file) async {
     if (file == null || !await file.exists()) return;
-    NativeService.i.setWallpaper(file.path);
+    NativeService.i.setWallpaper(file);
   }
 }
