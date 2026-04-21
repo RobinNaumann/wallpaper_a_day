@@ -1,9 +1,9 @@
-name: wallpaper_a_day
+name: wad
 description: "A wallpaper app that changes your wallpaper every day."
 
 publish_to: "none"
 
-version: 0.2.8+9
+version: 0.3.1+24
 
 environment:
   sdk: ^3.5.4
@@ -14,15 +14,15 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   flutter_acrylic: ^1.1.4
-  macos_ui: 2.0.9
+  macos_ui: 2.1.7
   elbe: ^0.2.8
-  moewe: ^0.2.9
+  moewe: ^0.2.10
   http: ^1.2.2
   url_launcher: ^6.3.1
-  html: ^0.15.5
   window_manager: ^0.5.1
   tray_manager: ^0.5.1
   image: ^4.5.4
+  html: ^0.15.6
 
 dev_dependencies:
   flutter_test:
@@ -34,6 +34,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter.ttf
 
 flutter_launcher_icons:
   windows:
@@ -41,4 +45,4 @@ flutter_launcher_icons:
     image_path: "assets/icon.png"
   macos:
     generate: true
-    image_path: "assets/icon_macos.png"
+    image_path: "assets/icon.png"

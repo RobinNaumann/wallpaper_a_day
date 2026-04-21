@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:elbe/elbe.dart';
 import 'package:moewe/moewe.dart';
-import 'package:wallpaper_a_day/bit/b_settings.dart';
-import 'package:wallpaper_a_day/model/m_image.dart';
-import 'package:wallpaper_a_day/model/m_provider.dart';
-import 'package:wallpaper_a_day/service/s_refresh.dart';
-import 'package:wallpaper_a_day/service/s_storage.dart';
-import 'package:wallpaper_a_day/service/s_wallpaper.dart';
+
+import '../main.dart';
+import '../model/m_image.dart';
+import '../model/m_provider.dart';
+import '../service/s_refresh.dart';
+import '../service/s_storage.dart';
+import '../service/s_wallpaper.dart';
+import 'b_settings.dart';
 
 class SeriesData extends JsonModel {
   final List<ImageModel> images;
@@ -28,12 +30,12 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
   final String? id;
 
   late Timer _wallTimer;
+  late Timer _recoverTimer;
   late RefreshScheduler _scheduler;
 
   SeriesBit(this.provider, this.series, this.id)
       : super.worker((_) async {
           final list = await StorageService.i.list(provider.id, series.id);
-
           final index = id == null
               ? (list.length - 1)
               : list.indexWhere((e) => e.id == id);
@@ -44,20 +46,37 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
     _set();
     _wallTimer = Timer.periodic(const Duration(seconds: 2), (_) => _set());
 
+    _recoverTimer = Timer.periodic(const Duration(minutes: 10), (_) {
+      this.state.whenOrNull(onError: (error) {
+        log.w(this, "auto-recovering SeriesBit due to error: $error");
+        reload();
+      });
+    });
+
     _scheduler = RefreshScheduler(
       provider: provider,
       series: series.id,
       worker: () async {
-        moewe.event("fetch",
-            data: {"provider": provider.id, "series": series.id});
+        moewe.event("fetch", data: {
+          "provider": provider.id,
+          "series": series.id,
+          "session": sessionId
+        });
+        log.d(
+            this, "refreshing series ${series.id} of provider ${provider.id}");
         await StorageService.i.refresh(provider, series.id);
         reload();
       },
     );
   }
 
-  void _set() =>
-      state.whenOrNull(onData: (d) => WallpaperService.i.set(d.current?.file));
+  void _set() => state.whenOrNull(onData: (d) async {
+        try {
+          await WallpaperService.i.set(d.current?.file);
+        } catch (e) {
+          log.w(this, "error setting wallpaper: $e");
+        }
+      });
 
   refresh() => _scheduler.force();
 
@@ -81,6 +100,7 @@ class SeriesBit extends MapMsgBitControl<SeriesData> {
   @override
   void dispose() {
     _wallTimer.cancel();
+    _recoverTimer.cancel();
     _scheduler.dispose();
     super.dispose();
   }

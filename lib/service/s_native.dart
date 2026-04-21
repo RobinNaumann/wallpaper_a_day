@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:elbe/elbe.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:screen_retriever/screen_retriever.dart';
 import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
+
+bool windowIsDocked = true;
 
 abstract class NativeService {
   Future<void> setWallpaper(File file);
@@ -38,6 +41,12 @@ class WindowsNativeService extends NativeService {
     return await _invoke(_c, 'setWallpaper', {'path': file.absolute.path});
   }
 
+  Future<bool> _mainDisplayHasHigherScaling() async {
+    final mainDisplay = await screenRetriever.getPrimaryDisplay();
+    final displays = await screenRetriever.getAllDisplays();
+    return displays.length > 1 && (mainDisplay.scaleFactor ?? 1) > 1.0;
+  }
+
   @override
   Future<void> setupWindow() async {
     final size = Size(350, 400);
@@ -51,13 +60,20 @@ class WindowsNativeService extends NativeService {
       skipTaskbar: true,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.hide();
       await windowManager.setAsFrameless();
+      await windowManager.setSize(size);
       await windowManager.setResizable(false);
       await windowManager.setAlignment(Alignment.bottomRight);
       await Window.initialize();
       await Window.setEffect(effect: WindowEffect.transparent);
-      await windowManager.show();
-      await windowManager.focus();
+      //await windowManager.show();
+      //await windowManager.focus();
+
+      if (await _mainDisplayHasHigherScaling()) {
+        windowIsDocked = false;
+        await windowManager.center();
+      }
     });
 
     await trayManager.setIcon("assets/icon_windows.ico");

@@ -1,8 +1,8 @@
 import 'package:elbe/elbe.dart';
-import 'package:wallpaper_a_day/service/s_storage.dart';
 
 import '../model/m_provider.dart';
 import '../model/m_settings.dart';
+import '../service/s_storage.dart';
 
 class SettingsBit extends MapMsgBitControl<Settings> {
   static const builder = MapMsgBitBuilder<Settings, SettingsBit>.make;

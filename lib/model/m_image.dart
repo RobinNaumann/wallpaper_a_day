@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:elbe/elbe.dart';
 import 'package:elbe/util/json_tools.dart';
-import 'package:wallpaper_a_day/service/s_storage.dart';
+
+import '../service/s_storage.dart';
 
 class ImageModel extends JsonModel {
   final String id;

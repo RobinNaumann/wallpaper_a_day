@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:elbe/elbe.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,4 +26,13 @@ extension ReplaceString on String {
     }
     return result;
   }
+}
+
+String uniqueId() {
+  const String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  String randomId = "";
+  for (int i = 0; i < 16; i++) {
+    randomId += chars.split("")[Random().nextInt(chars.length)];
+  }
+  return randomId;
 }

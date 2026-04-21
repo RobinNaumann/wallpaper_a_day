@@ -19,102 +19,120 @@
 #include <objbase.h>
 #include <string>
 
-#include <tchar.h>  
+#include <tchar.h>
 
 void AlreadyRunningGuard()
 {
-    // Unique name for your app's mutex
-    const TCHAR* mutexName = _T("in.robbb.wad");
+  // Unique name for your app's mutex
+  const TCHAR *mutexName = _T("in.robbb.wad");
 
-    // Try to create the mutex
-    HANDLE hMutex = CreateMutex(NULL, FALSE, mutexName);
+  // Try to create the mutex
+  HANDLE hMutex = CreateMutex(NULL, FALSE, mutexName);
 
-    if (hMutex == NULL)
-    {
-        MessageBox(NULL, _T("Failed to create mutex."), _T("Error"), MB_OK | MB_ICONERROR);
-        exit(1); // Exit the application
-    }
+  if (hMutex == NULL)
+  {
+    MessageBox(NULL, _T("Failed to create mutex."), _T("Error"), MB_OK | MB_ICONERROR);
+    exit(1); // Exit the application
+  }
 
-    // Check if mutex already exists
-    if (GetLastError() == ERROR_ALREADY_EXISTS)
-    {
-        // Another instance is running
-        MessageBox(NULL, _T("The application is already running. Check the tray"), _T("Warning"), MB_OK | MB_ICONWARNING);
-        CloseHandle(hMutex);
-        exit(0); // Exit the application
-    }
+  // Check if mutex already exists
+  if (GetLastError() == ERROR_ALREADY_EXISTS)
+  {
+    // Another instance is running
+    MessageBox(NULL, _T("The application is already running. Check the tray"), _T("Warning"), MB_OK | MB_ICONWARNING);
+    CloseHandle(hMutex);
+    exit(0); // Exit the application
+  }
 }
 
-std::wstring GetStartupFolder() {
-    wchar_t path[MAX_PATH];
-    SHGetFolderPathW(NULL, CSIDL_STARTUP, NULL, 0, path);
-    return path;
+std::wstring GetStartupFolder()
+{
+  wchar_t path[MAX_PATH];
+  SHGetFolderPathW(NULL, CSIDL_STARTUP, NULL, 0, path);
+  return path;
 }
 
-std::wstring GetExePath() {
-    wchar_t path[MAX_PATH];
-    GetModuleFileNameW(NULL, path, MAX_PATH);
-    return path;
+std::wstring GetExePath()
+{
+  wchar_t path[MAX_PATH];
+  GetModuleFileNameW(NULL, path, MAX_PATH);
+  return path;
 }
 
-bool CreateShortcut(const std::wstring& shortcutPath, const std::wstring& targetPath) {
-    CoInitialize(NULL);
-    IShellLink* pShellLink = nullptr;
-    IPersistFile* pPersistFile = nullptr;
-    if (FAILED(CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
-                               IID_IShellLink, (void**)&pShellLink))) {
-        CoUninitialize();
-        return false;
-    }
-    pShellLink->SetPath(targetPath.c_str());
-    pShellLink->SetDescription(L"Auto-start app");
+bool CreateShortcut(const std::wstring &shortcutPath, const std::wstring &targetPath)
+{
+  CoInitialize(NULL);
+  IShellLink *pShellLink = nullptr;
+  IPersistFile *pPersistFile = nullptr;
+  if (FAILED(CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
+                              IID_IShellLink, (void **)&pShellLink)))
+  {
+    CoUninitialize();
+    return false;
+  }
+  pShellLink->SetPath(targetPath.c_str());
+  // set working directory to exe directory. this makes sure relative paths work.
+  size_t lastSlash = targetPath.find_last_of(L"\\/");
+  if (lastSlash != std::wstring::npos)
+  {
+    std::wstring workingDir = targetPath.substr(0, lastSlash);
+    pShellLink->SetWorkingDirectory(workingDir.c_str());
+  }
+  pShellLink->SetDescription(L"Auto-start Wallpaper a Day");
 
-    if (FAILED(pShellLink->QueryInterface(IID_IPersistFile, (void**)&pPersistFile))) {
-        pShellLink->Release();
-        CoUninitialize();
-        return false;
-    }
-
-    bool success = SUCCEEDED(pPersistFile->Save(shortcutPath.c_str(), TRUE));
-    pPersistFile->Release();
+  if (FAILED(pShellLink->QueryInterface(IID_IPersistFile, (void **)&pPersistFile)))
+  {
     pShellLink->Release();
     CoUninitialize();
-    return success;
+    return false;
+  }
+
+  bool success = SUCCEEDED(pPersistFile->Save(shortcutPath.c_str(), TRUE));
+  pPersistFile->Release();
+  pShellLink->Release();
+  CoUninitialize();
+  return success;
 }
 
-bool AddToStartup() {
-    std::wstring startup = GetStartupFolder();
-    std::wstring shortcut = startup + L"\\MyApp.lnk";
-    std::wstring exePath = GetExePath();
-    return CreateShortcut(shortcut, exePath);
+bool AddToStartup()
+{
+  std::wstring startup = GetStartupFolder();
+  std::wstring shortcut = startup + L"\\wallpaper_a_day.lnk";
+  std::wstring exePath = GetExePath();
+  return CreateShortcut(shortcut, exePath);
 }
 
-bool RemoveFromStartup() {
-    std::wstring startup = GetStartupFolder();
-    std::wstring shortcut = startup + L"\\MyApp.lnk";
-    return DeleteFileW(shortcut.c_str()) == TRUE;
+bool RemoveFromStartup()
+{
+  std::wstring startup = GetStartupFolder();
+  std::wstring shortcut = startup + L"\\wallpaper_a_day.lnk";
+  return DeleteFileW(shortcut.c_str()) == TRUE;
 }
 
-bool IsInStartup() {
-    std::wstring startup = GetStartupFolder();
-    std::wstring shortcut = startup + L"\\MyApp.lnk";
-    return GetFileAttributesW(shortcut.c_str()) != INVALID_FILE_ATTRIBUTES;
+bool IsInStartup()
+{
+  std::wstring startup = GetStartupFolder();
+  std::wstring shortcut = startup + L"\\wallpaper_a_day.lnk";
+  return GetFileAttributesW(shortcut.c_str()) != INVALID_FILE_ATTRIBUTES;
 }
 
-static int SetWallpaper(const std::string path) {
+static int SetWallpaper(const std::string path)
+{
   int result;
   result = SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, (void *)path.c_str(), SPIF_UPDATEINIFILE);
   std::cout << result;
   return result;
 }
 
-FlutterWindow::FlutterWindow(const flutter::DartProject& project)
+FlutterWindow::FlutterWindow(const flutter::DartProject &project)
     : project_(project) {}
 
 FlutterWindow::~FlutterWindow() {}
 
-bool FlutterWindow::OnCreate() {
-  if (!Win32Window::OnCreate()) {
+bool FlutterWindow::OnCreate()
+{
+  if (!Win32Window::OnCreate())
+  {
     return false;
   }
 
@@ -127,7 +145,8 @@ bool FlutterWindow::OnCreate() {
   flutter_controller_ = std::make_unique<flutter::FlutterViewController>(
       frame.right - frame.left, frame.bottom - frame.top, project_);
   // Ensure that basic setup of the controller was successful.
-  if (!flutter_controller_->engine() || !flutter_controller_->view()) {
+  if (!flutter_controller_->engine() || !flutter_controller_->view())
+  {
     return false;
   }
   RegisterPlugins(flutter_controller_->engine());
@@ -136,56 +155,74 @@ bool FlutterWindow::OnCreate() {
       flutter_controller_->engine()->messenger(), "in.robbb.wad",
       &flutter::StandardMethodCodec::GetInstance());
   channel.SetMethodCallHandler(
-      [](const flutter::MethodCall<>& call,
-         std::unique_ptr<flutter::MethodResult<>> result) {
-        if (call.method_name() == "setWallpaper") {
-          const auto* arguments = std::get_if<flutter::EncodableMap>(call.arguments());
+      [](const flutter::MethodCall<> &call,
+         std::unique_ptr<flutter::MethodResult<>> result)
+      {
+        if (call.method_name() == "setWallpaper")
+        {
+          const auto *arguments = std::get_if<flutter::EncodableMap>(call.arguments());
           auto arg_it = arguments->find(flutter::EncodableValue("path"));
-          const std::string* arg_str = std::get_if<std::string>(&arg_it->second);
-          
-          if (!arg_str) {
+          const std::string *arg_str = std::get_if<std::string>(&arg_it->second);
+
+          if (!arg_str)
+          {
             result->Error("INVALID_ARGUMENT", "Expected string argument.");
             return;
           }
           int result_code = SetWallpaper(*arg_str);
-          if (result_code != -1) {
+          if (result_code != -1)
+          {
             result->Success();
-          } else {
+          }
+          else
+          {
             result->Error("UNAVAILABLE", "Wallpaper could not be set.");
           }
-        } else if (call.method_name() == "setAutostart") {
-          const auto* arguments = std::get_if<flutter::EncodableMap>(call.arguments());
+        }
+        else if (call.method_name() == "setAutostart")
+        {
+          const auto *arguments = std::get_if<flutter::EncodableMap>(call.arguments());
           auto arg_it = arguments->find(flutter::EncodableValue("on_login"));
-          const bool* arg_bool = std::get_if<bool>(&arg_it->second);
-          
-          if (!arg_bool) {
+          const bool *arg_bool = std::get_if<bool>(&arg_it->second);
+
+          if (!arg_bool)
+          {
             result->Error("INVALID_ARGUMENT", "Expected bool argument.");
             return;
           }
           bool success;
-          if (*arg_bool) {
+          if (*arg_bool)
+          {
             success = AddToStartup();
-          } else {
+          }
+          else
+          {
             success = RemoveFromStartup();
           }
-          if (success) {
+          if (success)
+          {
             result->Success();
-          } else {
+          }
+          else
+          {
             result->Error("UNAVAILABLE", "Could not update autostart setting.");
           }
-        } else if (call.method_name() == "getAutostart") {
+        }
+        else if (call.method_name() == "getAutostart")
+        {
           bool is_enabled = IsInStartup();
           result->Success(flutter::EncodableValue(is_enabled));
-        } else {
+        }
+        else
+        {
           result->NotImplemented();
         }
       });
 
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
-  flutter_controller_->engine()->SetNextFrameCallback([&]() {
-    this->Show();
-  });
+  flutter_controller_->engine()->SetNextFrameCallback([&]()
+                                                      { this->Show(); });
 
   // Flutter can complete the first frame before the "show window" callback is
   // registered. The following call ensures a frame is pending to ensure the
@@ -195,8 +232,10 @@ bool FlutterWindow::OnCreate() {
   return true;
 }
 
-void FlutterWindow::OnDestroy() {
-  if (flutter_controller_) {
+void FlutterWindow::OnDestroy()
+{
+  if (flutter_controller_)
+  {
     flutter_controller_ = nullptr;
   }
 
@@ -206,24 +245,26 @@ void FlutterWindow::OnDestroy() {
 LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
-                              LPARAM const lparam) noexcept {
+                              LPARAM const lparam) noexcept
+{
   // Give Flutter, including plugins, an opportunity to handle window messages.
-  if (flutter_controller_) {
+  if (flutter_controller_)
+  {
     std::optional<LRESULT> result =
         flutter_controller_->HandleTopLevelWindowProc(hwnd, message, wparam,
                                                       lparam);
-    if (result) {
+    if (result)
+    {
       return *result;
     }
   }
 
-  switch (message) {
-    case WM_FONTCHANGE:
-      flutter_controller_->engine()->ReloadSystemFonts();
-      break;
+  switch (message)
+  {
+  case WM_FONTCHANGE:
+    flutter_controller_->engine()->ReloadSystemFonts();
+    break;
   }
 
   return Win32Window::MessageHandler(hwnd, message, wparam, lparam);
 }
-
-

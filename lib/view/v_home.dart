@@ -1,12 +1,13 @@
 import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:moewe/moewe.dart';
-import 'package:wallpaper_a_day/bit/b_series.dart';
-import 'package:wallpaper_a_day/bit/b_settings.dart';
-import 'package:wallpaper_a_day/view/v_current.dart';
-import 'package:wallpaper_a_day/view/v_settings.dart';
+import 'package:window_manager/window_manager.dart';
 
+import '../bit/b_series.dart';
+import '../bit/b_settings.dart';
+import '../service/s_native.dart';
 import '../util/icon_btn.dart';
+import 'v_current.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -29,13 +30,14 @@ class HomeView extends StatelessWidget {
                       const Text("data could not be read",
                           textAlign: TextAlign.center),
                       PushButton(
-                          onPressed: () => sbit.deleteConfig(),
+                          onPressed: () => bit.reload(),
                           controlSize: ControlSize.large,
-                          child: Text("reset ${settings.provider.label} config")),
+                          child: Text("try again")),
                       Padded.only(
                         top: 1,
                         child: TextButton(
-                            onPressed: () => Navigator.of(context).pushNamed("/settings"),
+                            onPressed: () =>
+                                Navigator.of(context).pushNamed("/settings"),
                             child: const Text("open settings")),
                       )
                     ].spaced(),
@@ -48,7 +50,8 @@ class HomeView extends StatelessWidget {
                           AIconButton(
                               icon: ApfelIcons.settings,
                               tooltip: "settings",
-                              onTap: () => Navigator.of(context).pushNamed("/settings")),
+                              onTap: () =>
+                                  Navigator.of(context).pushNamed("/settings")),
                           AIconButton(
                               icon: ApfelIcons.chevron_left,
                               tooltip: "previous",
@@ -102,7 +105,7 @@ class HomeView extends StatelessWidget {
                                     "${settings.provider.label} - ${settings.series.label}",
                                 onTap: () => bit.refresh(),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -168,5 +171,30 @@ class __ReloadBtnState extends State<_ReloadBtn>
         ].spaced(amount: .5),
       ),
     );
+  }
+}
+
+class BrandingBar extends ThemedWidget {
+  const BrandingBar({super.key});
+
+  @override
+  Widget make(BuildContext context, ThemeData theme) {
+    final dark = theme.color.mode.isDark;
+    return Card(
+        onTap: () {
+          windowIsDocked = !windowIsDocked;
+          if (!windowIsDocked) {
+            windowManager.center(animate: true);
+          } else {
+            windowManager.setAlignment(Alignment.bottomRight, animate: true);
+          }
+        },
+        border: Border.noneRect,
+        child: Row(children: [
+          Text.h4("Daily Earth Wallpaper",
+              color: dark ? null : Color(0xFF003247)),
+          const Spacer(),
+          Image.asset(dark ? "assets/icon.png" : "assets/icon.png", height: 22),
+        ]));
   }
 }

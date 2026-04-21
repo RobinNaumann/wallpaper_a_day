@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:elbe/elbe.dart';
-import 'package:wallpaper_a_day/model/m_provider.dart';
+import 'package:moewe/moewe.dart' hide JsonMap;
+
+import '../model/m_provider.dart';
 
 class _NextRefresh {
   final UnixMs time;
@@ -18,21 +20,27 @@ class RefreshScheduler {
   final ProviderModel provider;
   final String series;
   final Future Function() worker;
+  final Duration interval;
   late final Timer _timer;
+
   RefreshScheduler({
     required this.provider,
     required this.series,
     required this.worker,
-    Duration interval = const Duration(minutes: 4),
+    this.interval = const Duration(minutes: 4),
   }) {
     _instance?.dispose();
     _instance = this;
-    _timer = Timer.periodic(interval, (_) => _refresh());
+    _timer = Timer.periodic(interval, (_) {_refresh();});
     _refresh();
   }
 
-  void _refresh() {
-    if ((_next[_key]?.time ?? UnixMs.zero) < UnixMs.now) force();
+  void _refresh() async {
+    try {
+    if ((_next[_key]?.time ?? UnixMs.zero) < UnixMs.now) await force();
+    } catch (e) {
+      log.w(this, "error during scheduled refresh: $e");
+    }
   }
 
   String get _key => '${provider.id}.$series';
@@ -44,9 +52,11 @@ class RefreshScheduler {
       await worker();
       _next[_key] = _NextRefresh(tomorrow, 0);
     } catch (e) {
-      final nextFail = (_next[_key]?.failCount ?? 0) + 1;
+      final int nextFail = (_next[_key]?.failCount ?? 0) + 1;
       _next[_key] = _NextRefresh(
-          Math.min(tomorrow, UnixMs(now + 1000 * 60 * 2 * nextFail)), nextFail);
+          UnixMs(Math.min(
+            now + interval.inMilliseconds - 100 // a bit of buffer for execution
+            ,now + 1000 * 60 * 2 * nextFail)), nextFail);
       throw ElbeError("REF_01", "could not refresh", cause: e);
     }
   }

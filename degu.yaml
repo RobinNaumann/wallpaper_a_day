@@ -13,18 +13,18 @@ tagline: daily wallpapers for your computer
 about: |
   Wallpaper a Day is a simple macOS/Windows app that changes your wallpaper every day.
   Discover new wallpapers from multiple sources that also provide additional information about the images.
-icon: https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/icon.png
-source: https://github.com/RobinNaumann/wallpaper_a_day
+icon: https://raw.githubusercontent.com/RobinNaumann/DailyEarthWallpaper/main/assets/icon.png
+source: https://github.com/RobinNaumann/DailyEarthWallpaper
 donate: https://robbb.in/donate
 screenshots:
-  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_01.png
-  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_02.png
-  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_03.png
-  - https://raw.githubusercontent.com/RobinNaumann/wallpaper_a_day/main/assets/screenshot/sc_wad_win.png
+  - https://raw.githubusercontent.com/RobinNaumann/DailyEarthWallpaper/main/assets/screenshot/sc_wad_01.png
+  - https://raw.githubusercontent.com/RobinNaumann/DailyEarthWallpaper/main/assets/screenshot/sc_wad_02.png
+  - https://raw.githubusercontent.com/RobinNaumann/DailyEarthWallpaper/main/assets/screenshot/sc_wad_03.png
+  - https://raw.githubusercontent.com/RobinNaumann/DailyEarthWallpaper/main/assets/screenshot/sc_wad_win.png
 releases:
   - version: 0.2.4
     downloads:
       - platform: macOS
-        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/Wallpaper.a.Day.app.zip
+        url: https://github.com/RobinNaumann/DailyEarthWallpaper/releases/latest/download/Wallpaper.a.Day.app.zip
       - platform: Windows
-        url: https://github.com/RobinNaumann/wallpaper_a_day/releases/latest/download/WallpaperADay-Installer.exe
+        url: https://github.com/RobinNaumann/DailyEarthWallpaper/releases/latest/download/WallpaperADay-Installer.exe

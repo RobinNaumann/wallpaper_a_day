@@ -1,5 +1,6 @@
 import 'package:elbe/elbe.dart';
-import 'package:wallpaper_a_day/service/s_native.dart';
+
+import '../service/s_native.dart';
 
 class AutostartBit extends MapMsgBitControl<bool?> {
   static const builder = MapMsgBitBuilder<bool?, AutostartBit>.make;

@@ -2,6 +2,8 @@ import Cocoa
 import FlutterMacOS
 import ServiceManagement
 
+let USE_STATUS_BAR = true //set to false to use a normal window instead of a status bar app
+
 @main
 class AppDelegate: FlutterAppDelegate {
   var statusBar: StatusBarController?
@@ -21,26 +23,32 @@ class AppDelegate: FlutterAppDelegate {
   }
 
   override func applicationDidFinishLaunching(_ aNotification: Notification) {
-
-    // add to login items:
-    //do {
-    //  try SMAppService.mainApp.register()
-    //} catch {}
-
     let controller: FlutterViewController =
-      mainFlutterWindow?.contentViewController as! FlutterViewController
-    popover.contentSize = NSSize(width: 360, height: 400)  //change this to your desired size
-    popover.contentViewController = controller  //set the content view controller for the popover to flutter view controller
-    statusBar = StatusBarController.init(popover)
-    mainFlutterWindow?.close()  //close the default flutter window
+        mainFlutterWindow?.contentViewController as! FlutterViewController
+
+    if USE_STATUS_BAR {
+      mainFlutterWindow?.close() // we don't need the main window
+      let popContCtrl = PopoverContainerViewController(flutterViewController: controller)
+      popover.contentViewController = popContCtrl
+      popover.contentSize = NSSize(width: 360, height: 400)
+      
+      statusBar = StatusBarController.init(popover)
+    }
+    else {
+      mainFlutterWindow?.setContentSize(NSSize(width: 360, height: 450))
+      mainFlutterWindow?.center()
+      mainFlutterWindow?.makeKeyAndOrderFront(nil)
+      // show controls:
+      mainFlutterWindow?.styleMask.insert(.titled)
+      mainFlutterWindow?.styleMask.insert(.closable)
+    }
+   
     setupMethodChannel(controller: controller)
     super.applicationDidFinishLaunching(aNotification)
 
   }
 
   private func setupMethodChannel(controller: FlutterViewController) {
-    //controller = window?.rootViewController as! FlutterViewController
-    //let mathodChannel = FlutterMethodChannel(name: "in.robbb.wad", binaryMessenger: controller.binaryMessenger)
     let methodChannel = FlutterMethodChannel(
       name: "in.robbb.wad", binaryMessenger: controller.engine.binaryMessenger)
     methodChannel.setMethodCallHandler {

@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:wallpaper_a_day/model/m_image.dart';
-import 'package:wallpaper_a_day/model/m_provider.dart';
-import 'package:wallpaper_a_day/model/m_settings.dart';
-
+import '../model/m_image.dart';
+import '../model/m_provider.dart';
+import '../model/m_settings.dart';
 import '../providers/providers.dart';
 
-const String baseDir = 'wallpaper_a_day';
+const String baseDir = 'wad_config';
 const String settingsFile = '$baseDir/settings.json';
 
 class StorageService {
@@ -84,6 +83,14 @@ class StorageService {
 
     final file = File('${dir.path}/index.json');
     if (!await file.exists()) await file.writeAsString('[]');
+
+    // if the file is corrupted, reset it
+    // TODO: this leads to dangling files. This could be improved.
+    try {
+      await _loadIndex(file);
+    } catch (e) {
+      await file.writeAsString('[]');
+    }
 
     return file;
   }

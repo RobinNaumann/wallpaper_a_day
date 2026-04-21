@@ -1,7 +1,7 @@
 import 'package:elbe/elbe.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:wallpaper_a_day/model/m_image.dart';
 
+import '../model/m_image.dart';
 import '../util/icon_btn.dart';
 
 class CurrentImage extends StatelessWidget {

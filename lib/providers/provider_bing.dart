@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:elbe/elbe.dart';
-import 'package:elbe/util/json_tools.dart';
-import 'package:wallpaper_a_day/util/util.dart';
 
 import '../model/m_image.dart';
 import '../model/m_provider.dart';
+import '../util/util.dart';
 
 final ProviderModel bingProvider = ProviderModel(
     id: "bing",

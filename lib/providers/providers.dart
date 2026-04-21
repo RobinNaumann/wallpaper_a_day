@@ -1,6 +1,9 @@
-import 'package:wallpaper_a_day/providers/provider_wikicommon.dart';
-
 import 'provider_apod.dart';
 import 'provider_bing.dart';
+import 'provider_wikicommon.dart';
 
-final providers = [bingProvider, apodProvider, wikiCommonsProvider];
+final providers = [
+  apodProvider,
+  bingProvider,
+  wikiCommonsProvider,
+];

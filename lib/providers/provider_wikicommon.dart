@@ -1,8 +1,9 @@
 import 'package:elbe/elbe.dart';
 import 'package:html/parser.dart';
-import 'package:wallpaper_a_day/model/m_image.dart';
-import 'package:wallpaper_a_day/model/m_provider.dart';
-import 'package:wallpaper_a_day/util/util.dart';
+
+import '../model/m_image.dart';
+import '../model/m_provider.dart';
+import '../util/util.dart';
 
 const _baseUrl = "https://commons.wikimedia.org";
 const _queryUrl =
