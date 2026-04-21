@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="*"
+    Name="Wallpaper a Day"
+    Language="1033"
+    Version="0.3.1"
+    Manufacturer="Robin Naumann"
+    UpgradeCode="{7A279ADA-E28E-4A45-ADFC-948B8E424EE9}">
+
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perUser" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <Icon Id="AppIcon.ico" SourceFile="..\assets\icon_windows.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
+
+    <Feature Id="MainFeature" Title="Wallpaper a Day" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="StartMenuShortcutComponent" />
+    </Feature>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="INSTALLFOLDER" Name="wallpaper_a_day" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Wallpaper a Day" />
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="StartMenuShortcutComponent" Guid="{35D6DD46-A598-4BB3-9D85-3312529F5EC9}">
+        <Shortcut
+          Id="ApplicationStartMenuShortcut"
+          Name="Wallpaper a Day"
+          Target="[INSTALLFOLDER]WallpaperADay.exe"
+          WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="ApplicationProgramsFolderRemove" On="uninstall" />
+        <RegistryValue
+          Root="HKCU"
+          Key="Software\RobinNaumann\WallpaperADay"
+          Name="installed"
+          Type="integer"
+          Value="1"
+          KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+  </Product>
+</Wix>
