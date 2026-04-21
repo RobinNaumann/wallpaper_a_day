@@ -6,7 +6,7 @@ import 'package:window_manager/window_manager.dart';
 import '../bit/b_series.dart';
 import '../bit/b_settings.dart';
 import '../service/s_native.dart';
-import '../util/icon_btn.dart';
+import '../util/wad_button.dart';
 import 'v_current.dart';
 
 class HomeView extends StatelessWidget {
@@ -22,8 +22,9 @@ class HomeView extends StatelessWidget {
               SeriesBit(settings.provider, settings.series, settings.imgId),
           child: SeriesBit.builder(
               onError: (bit, error) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    cross: CrossAxisAlignment.center,
+                    main: MainAxisAlignment.center,
+                    gap: 1,
                     children: [
                       const Center(
                           child: Icon(ApfelIcons.exclamationmark_triangle)),
@@ -40,32 +41,32 @@ class HomeView extends StatelessWidget {
                                 Navigator.of(context).pushNamed("/settings"),
                             child: const Text("open settings")),
                       )
-                    ].spaced(),
+                    ],
                   ),
               onData: (bit, data) => Column(children: [
                     Padded.all(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        main: MainAxisAlignment.spaceBetween,
                         children: [
-                          AIconButton(
+                          WADButton.icon(
                               icon: ApfelIcons.settings,
                               tooltip: "settings",
                               onTap: () =>
                                   Navigator.of(context).pushNamed("/settings")),
-                          AIconButton(
+                          WADButton.icon(
                               icon: ApfelIcons.chevron_left,
                               tooltip: "previous",
                               onTap: data.images.isEmpty || data.index == 0
                                   ? null
                                   : () => bit.previous(context)),
-                          AIconButton(
+                          WADButton.icon(
                               icon: ApfelIcons.chevron_right,
                               tooltip: "next",
                               onTap: data.images.isEmpty ||
                                       data.index == data.images.length - 1
                                   ? null
                                   : () => bit.next(context)),
-                          AIconButton(
+                          WADButton.icon(
                               icon: ApfelIcons.chevron_right_2,
                               tooltip: "current",
                               onTap: data.images.isEmpty ||
@@ -87,6 +88,7 @@ class HomeView extends StatelessWidget {
                                   ? Padded.symmetric(
                                       vertical: 4,
                                       child: Column(
+                                        gap: 1,
                                         children: [
                                           const Center(
                                               child: Icon(
@@ -94,7 +96,7 @@ class HomeView extends StatelessWidget {
                                           const Text(
                                               "images will be loaded soon",
                                               textAlign: TextAlign.center),
-                                        ].spaced(),
+                                        ],
                                       ),
                                     )
                                   : CurrentImage(model: data.current!),
@@ -156,7 +158,8 @@ class __ReloadBtnState extends State<_ReloadBtn>
     return GestureDetector(
       onTap: _handleTap,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        main: MainAxisAlignment.center,
+        gap: .5,
         children: [
           Padded.only(
               top: .25,
@@ -168,18 +171,18 @@ class __ReloadBtnState extends State<_ReloadBtn>
                 ),
               )),
           Text(widget.label),
-        ].spaced(amount: .5),
+        ],
       ),
     );
   }
 }
 
-class BrandingBar extends ThemedWidget {
+class BrandingBar extends StatelessWidget {
   const BrandingBar({super.key});
 
   @override
-  Widget make(BuildContext context, ThemeData theme) {
-    final dark = theme.color.mode.isDark;
+  Widget build(BuildContext context) {
+    final dark = context.theme.color.isDark;
     return Card(
         onTap: () {
           windowIsDocked = !windowIsDocked;
@@ -189,7 +192,7 @@ class BrandingBar extends ThemedWidget {
             windowManager.setAlignment(Alignment.bottomRight, animate: true);
           }
         },
-        border: Border.noneRect,
+        border: Border.none,
         child: Row(children: [
           Text.h4("Daily Earth Wallpaper",
               color: dark ? null : Color(0xFF003247)),

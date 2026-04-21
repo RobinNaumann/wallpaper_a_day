@@ -102,9 +102,9 @@ class WindowsNativeService extends NativeService {
 
   @override
   Widget pageBase(BuildContext context, Widget child) => Container(
-      color: context.theme.color.mode == ColorModes.light
-          ? const Color(0xFFF0F0F0)
-          : const Color(0xFF202020),
+      color: context.theme.color.isDark
+          ? const Color(0xFF202020)
+          : const Color(0xFFF0F0F0),
       child: child);
 }
 

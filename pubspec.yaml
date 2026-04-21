@@ -15,7 +15,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_acrylic: ^1.1.4
   macos_ui: 2.1.7
-  elbe: ^0.2.8
   moewe: ^0.2.10
   http: ^1.2.2
   url_launcher: ^6.3.1
@@ -23,6 +22,7 @@ dependencies:
   tray_manager: ^0.5.1
   image: ^4.5.4
   html: ^0.15.6
+  elbe: ^1.0.17
 
 dev_dependencies:
   flutter_test:

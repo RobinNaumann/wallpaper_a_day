@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../bit/b_autostart.dart';
 import '../service/s_storage.dart';
-import '../util/icon_btn.dart';
+import '../util/wad_button.dart';
 import 'v_providers.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -17,16 +17,17 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const RemInsets.all(1).toPixel(context),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      child: Column(gap: 0, cross: CrossAxisAlignment.stretch, children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          gap: 1,
+          main: MainAxisAlignment.spaceBetween,
           children: [
-            AIconButton(
+            WADButton.icon(
                 icon: Icons.x,
                 tooltip: "back",
                 onTap: Navigator.of(context).pop),
             const Text.h4("settings"),
-            AIconButton(
+            WADButton.icon(
               icon: ApfelIcons.exclamationmark_bubble,
               tooltip: "send feedback",
               onTap: () => MoeweFeedbackPage.show(
@@ -43,21 +44,23 @@ class SettingsPage extends StatelessWidget {
                         MacosTheme.brightnessOf(context) == Brightness.dark),
               ),
             ),
-          ].spaced(),
+          ],
         ),
-        const Spaced.vertical(2),
+        const Spacer.vertical(2),
         const Text.h6("image provider"),
-        const Spaced.vertical(1),
+        const Spacer.vertical(1),
         const ProvidersView(),
-        const Spaced.vertical(2),
+        const Spacer.vertical(2),
         const DeleteAllButton(),
-        const Spaced.vertical(1),
+        const Spacer.vertical(1),
         const AutostartButton(),
-        const Spaced.vertical(1),
-        ATextButton(label: "quit", onTap: () => exit(0)),
-        const Spaced.vertical(),
+        const Spacer.vertical(1),
+        WADButton.text(
+            label: "quit", tooltip: "quit the app", onTap: () => exit(0)),
+        const Spacer.vertical(),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          gap: .125,
+          cross: CrossAxisAlignment.stretch,
           children: [
             GestureDetector(
                 onTap: () => launchUrlString("https://robbb.in"),
@@ -69,7 +72,11 @@ class SettingsPage extends StatelessWidget {
                 child: Text.bodyS(
                     "v${moewe.appVersion ?? "?"}+${moewe.buildNumber ?? "?"}, available under GPL-3.0",
                     textAlign: TextAlign.center)),
-          ].spaced(amount: .125),
+            GestureDetector(
+                onTap: () => launchUrlString("https://robbb.in/donate"),
+                child:
+                    const Text.bodyS("donate ❤️", textAlign: TextAlign.center)),
+          ],
         ),
       ]),
     );
@@ -82,11 +89,12 @@ class AutostartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutostartBit.builder(
-        onData: (bit, start) => ATextButton(
+        onData: (bit, start) => WADButton.text(
             icon: start ?? false
-                ? ApfelIcons.checkmark_circle
+                ? ApfelIcons.checkmark_circle_fill
                 : ApfelIcons.circle,
             label: "start on login",
+            tooltip: "start the app on login",
             onTap: context.bit<AutostartBit>().toggle));
   }
 }
@@ -96,10 +104,11 @@ class DeleteAllButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ATextButton(
+    return WADButton.text(
         icon: ApfelIcons.trash,
         label: "delete all data",
-        color: Colors.redAccent,
+        kind: ColorKinds.error,
+        tooltip: "delete all data",
         onTap: () => showMacosAlertDialog(
             barrierDismissible: true,
             context: context,

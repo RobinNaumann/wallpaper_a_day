@@ -42,12 +42,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Theme(
-      data: ThemeData.preset(
-          colorSeed:
-              ColorSeed.make(accent: LayerColor.fromBack(Color(0xFF4f58c2))),
-          remSize: 14,
-          titleFont: "Inter",
-          titleVariant: TypeVariants.bold),
+      data: ElbeThemeData.preset(
+          geometry: GeometryThemeData.preset(
+            remSize: 14,
+          ),
+          type: TypeThemeData.preset(
+            titleFont: "Inter",
+            titleVariant: TypeVariants.bold,
+          ),
+          color: ColorThemeData.preset(
+            values: ColorThemeValues(
+                accent: LayerColor.fromBack(const Color(0xFF4f58c2))),
+          )),
       child: BrightnessObserver(
           child: BitProvider(
               create: (_) => SettingsBit(),

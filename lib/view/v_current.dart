@@ -2,7 +2,7 @@ import 'package:elbe/elbe.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../model/m_image.dart';
-import '../util/icon_btn.dart';
+import '../util/wad_button.dart';
 
 class CurrentImage extends StatelessWidget {
   final ImageModel model;
@@ -11,15 +11,16 @@ class CurrentImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      gap: 1,
+      cross: CrossAxisAlignment.stretch,
       children: [
         /*FutureBuilder(
             future: getImgLuminance(model.file.path),
             builder: (_, luminance) =>
                 Card(child: Text(luminance.data.toString()))),*/
         ClipRRect(
-          borderRadius: GeometryTheme.of(context).border.borderRadius ??
-              BorderRadius.zero,
+          borderRadius: BorderRadius.circular(
+              context.rem(context.theme.geometry.borderRadius)),
           child: AspectRatio(
               aspectRatio: 16 / 9,
               child: Image.file(
@@ -37,12 +38,13 @@ class CurrentImage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         if (model.link != null)
-          ATextButton(
+          WADButton.text(
             icon: ApfelIcons.link,
             label: "learn more",
+            tooltip: "learn more about this image",
             onTap: () => launchUrlString(model.link ?? "https://bing.com"),
           ),
-      ].spaced(),
+      ],
     );
   }
 }

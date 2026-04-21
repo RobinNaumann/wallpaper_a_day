@@ -12,7 +12,8 @@ class ProvidersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsBit.builder(
         onData: (bit, settings) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              gap: 1,
+              cross: CrossAxisAlignment.stretch,
               children: [
                 for (final p in providers)
                   ProviderSnippet(
@@ -21,7 +22,7 @@ class ProvidersView extends StatelessWidget {
                       selectedSeries:
                           settings.provider.id == p.id ? settings.series : null,
                       onSelect: (p, s) => bit.setProvider(p, s))
-              ].spaced(),
+              ],
             ));
   }
 }
@@ -41,30 +42,32 @@ class ProviderSnippet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flat = context.theme.color.activeKinds.flat;
-    final pressedC = flat.active.back;
+    final selColor = context.theme.color.resolve(
+      kind: ColorKinds.accent,
+      manner: selected ? ColorManners.minor : ColorManners.plain,
+    );
 
-    final accent = ColorTheme.of(context).activeSchemes.accent.back;
     return GestureDetector(
       onTap: () => selected ? null : onSelect(provider, provider.series.first),
-      child: Container(
-          decoration: BoxDecoration(
-            border: WBorder.all(color: selected ? accent : pressedC, width: 2),
-            borderRadius: GeometryTheme.of(context).border.borderRadius,
-            color: selected ? accent.withOpacity(.125) : Colors.transparent,
-          ),
-          padding: const RemInsets.all(1).toPixel(context),
+      child: Card(
+          kind: ColorKinds.accent,
+          manner: selected ? ColorManners.minor : ColorManners.plain,
+          border: Border(opacity: selected ? 1 : .3),
+          padding: const RemInsets.all(1),
+          color: selColor.back.withAlpha(70),
           child: Row(
+            gap: 1,
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  gap: 0,
+                  cross: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       provider.label,
                       variant: TypeVariants.bold,
                     ),
-                    Spaced.vertical(.5),
+                    Spacer.vertical(.5),
                     Text(provider.description),
                     if (provider.series.length > 1)
                       Padded.only(
@@ -76,7 +79,10 @@ class ProviderSnippet extends StatelessWidget {
                               items: [
                                 for (final s in provider.series)
                                   MacosPopupMenuItem(
-                                      child: Text(s.label), value: s)
+                                      child: Text(s.label,
+                                          color: context
+                                              .theme.color.selected.front),
+                                      value: s)
                               ],
                               onChanged: (s) =>
                                   s != null ? onSelect(provider, s) : null),
@@ -89,9 +95,8 @@ class ProviderSnippet extends StatelessWidget {
                 selected
                     ? ApfelIcons.checkmark_alt_circle_fill
                     : ApfelIcons.circle,
-                color: selected ? accent : pressedC,
               )
-            ].spaced(),
+            ],
           )),
     );
   }
