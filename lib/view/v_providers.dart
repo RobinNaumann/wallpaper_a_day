@@ -1,5 +1,6 @@
 import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:wad/util/util.dart';
 
 import '../bit/b_settings.dart';
 import '../model/m_provider.dart';
@@ -54,7 +55,7 @@ class ProviderSnippet extends StatelessWidget {
           manner: selected ? ColorManners.minor : ColorManners.plain,
           border: Border(opacity: selected ? 1 : .3),
           padding: const RemInsets.all(1),
-          color: selColor.back.withAlpha(70),
+          color: selColor.back.withTranslucency(.3),
           child: Row(
             gap: 1,
             children: [

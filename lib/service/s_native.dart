@@ -9,6 +9,10 @@ import 'package:window_manager/window_manager.dart';
 
 bool windowIsDocked = true;
 
+typedef NativeConfig = ({
+  bool translucent,
+});
+
 abstract class NativeService {
   Future<void> setWallpaper(File file);
   Future<void> setAutostart(bool onLogin);
@@ -16,6 +20,7 @@ abstract class NativeService {
   Future<void> setupWindow();
   Widget base(BuildContext context, Widget child) => child;
   Widget pageBase(BuildContext context, Widget child) => child;
+  NativeConfig get config;
 
   static NativeService? _i = null;
   static NativeService get i {
@@ -30,6 +35,9 @@ abstract class NativeService {
 
 class WindowsNativeService extends NativeService {
   static const MethodChannel _c = MethodChannel('in.robbb.wad');
+
+  @override
+  get config => (translucent: false);
 
   Future<void> setAutostart(bool onLogin) =>
       _invoke(_c, 'setAutostart', {'on_login': onLogin});
@@ -110,6 +118,10 @@ class WindowsNativeService extends NativeService {
 
 class MacosNativeService extends NativeService {
   static const MethodChannel _c = MethodChannel('in.robbb.wad');
+
+  @override
+  get config => (translucent: true);
+
   Future<void> setWallpaper(File file) =>
       _invoke(_c, 'setWallpaper', {'path': file.path});
 

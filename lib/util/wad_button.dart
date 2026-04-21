@@ -1,5 +1,6 @@
 import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:wad/util/util.dart';
 
 class WADButton extends StatefulWidget {
   final ColorKinds? kind;
@@ -43,9 +44,10 @@ class _AppleButtonBaseState extends State<WADButton> {
   @override
   Widget build(BuildContext context) {
     final loud = widget.kind != null;
+    final disabled = widget.onTap == null;
     final selColor = context.theme.color.resolve(
       kind: widget.kind,
-      state: widget.onTap != null
+      state: disabled
           ? pressed
               ? ColorStates.active
               : ColorStates.neutral
@@ -59,8 +61,7 @@ class _AppleButtonBaseState extends State<WADButton> {
         onTapCancel: () => setState(() => pressed = false),
         onTap: widget.onTap,
         child: MacosTooltip(
-          message:
-              "${widget.tooltip}${widget.onTap != null ? "" : " (disabled)"}",
+          message: "${widget.tooltip}${disabled ? " (disabled)" : ""}",
           child: Card(
               constraints: RemConstraints(
                   minHeight: widget._minHeight, minWidth: widget._minHeight),
@@ -71,7 +72,7 @@ class _AppleButtonBaseState extends State<WADButton> {
               manner: loud ? ColorManners.major : ColorManners.plain,
               color: loud
                   ? null
-                  : selColor.back.withAlpha(widget.onTap != null ? 70 : 30),
+                  : selColor.back.withTranslucency(disabled ? .25 : .125),
               padding: RemInsets.all(widget._padding),
               child: Row(
                 cross: CrossAxisAlignment.center,

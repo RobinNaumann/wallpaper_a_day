@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:elbe/elbe.dart';
 import 'package:http/http.dart' as http;
+import 'package:wad/service/s_native.dart';
 
 Future<String> fetch(String url) async {
   final response = await http.get(Uri.parse(url));
@@ -26,6 +27,14 @@ extension ReplaceString on String {
     }
     return result;
   }
+}
+
+extension WithTranslucency on Color {
+  /// Returns a copy of this color with the given translucency applied.
+  /// Only applies translucency when the platform supports it (e.g. macOS).
+  Color withTranslucency(double amount) => NativeService.i.config.translucent
+      ? this.withAlpha((255 * amount).toInt())
+      : this;
 }
 
 String uniqueId() {
