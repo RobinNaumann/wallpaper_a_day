@@ -9,14 +9,15 @@ Wallpaper a Day is a simple macOS/Windows app that changes your wallpaper every 
 - [WikiMedia](https://commons.wikimedia.org/wiki/Main_Page) (multiple locales)
 
 ### Screenshots
-
+##### macOS
 _<img src="./assets/screenshot/sc_wad_01.png" height="250" />_
 _<img src="./assets/screenshot/sc_wad_02.png" height="250" />_
+##### Windows
 _<img src="./assets/screenshot/sc_wad_win.png" height="250" />_
 
 ### Install
 
-1. download it [here](https://apps.robbb.in/wallpaper_a_day) for macOS or Windows
+1. download it [here](https://apps.robbb.in/wallpaper_a_day) for macOS (i'm working on a Windows installer right now)
 
 ### contribute
 
