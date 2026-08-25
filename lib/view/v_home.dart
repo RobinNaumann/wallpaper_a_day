@@ -43,7 +43,7 @@ class HomeView extends StatelessWidget {
                       )
                     ],
                   ),
-              onData: (bit, data) => Column(children: [
+              onData: (bit, data) => Column(gap: 0, children: [
                     Padded.all(
                       child: Row(
                         main: MainAxisAlignment.spaceBetween,

@@ -75,7 +75,7 @@ class SettingsPage extends StatelessWidget {
             GestureDetector(
                 onTap: () => launchUrlString("https://robbb.in/donate"),
                 child:
-                    const Text.bodyS("donate ❤️", textAlign: TextAlign.center)),
+                    const Text.bodyS("donate ♡", textAlign: TextAlign.center)),
           ],
         ),
       ]),

@@ -1,6 +1,7 @@
 import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:wad/util/util.dart';
+import 'package:wad/util/wad_button.dart';
 
 import '../bit/b_settings.dart';
 import '../model/m_provider.dart';
@@ -13,16 +14,19 @@ class ProvidersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsBit.builder(
         onData: (bit, settings) => Column(
-              gap: 1,
+              gap: .15,
               cross: CrossAxisAlignment.stretch,
               children: [
-                for (final p in providers)
+                for (var i = 0; i < providers.length; i++)
                   ProviderSnippet(
-                      provider: p,
-                      selected: settings.provider.id == p.id,
-                      selectedSeries:
-                          settings.provider.id == p.id ? settings.series : null,
-                      onSelect: (p, s) => bit.setProvider(p, s))
+                      provider: providers[i],
+                      selected: settings.provider.id == providers[i].id,
+                      selectedSeries: settings.provider.id == providers[i].id
+                          ? settings.series
+                          : null,
+                      onSelect: (p, s) => bit.setProvider(p, s),
+                      first: i == 0,
+                      last: i == providers.length - 1)
               ],
             ));
   }
@@ -33,29 +37,36 @@ class ProviderSnippet extends StatelessWidget {
   final ProviderSeries? selectedSeries;
   final bool selected;
   final Function(ProviderModel p, ProviderSeries s) onSelect;
+  final bool first;
+  final bool last;
 
   const ProviderSnippet(
       {super.key,
       required this.provider,
       required this.selected,
       required this.selectedSeries,
-      required this.onSelect});
+      required this.onSelect,
+      required this.first,
+      required this.last});
 
   @override
   Widget build(BuildContext context) {
     final selColor = context.theme.color.resolve(
       kind: ColorKinds.accent,
-      manner: selected ? ColorManners.minor : ColorManners.plain,
+      manner: ColorManners.plain,
     );
 
     return GestureDetector(
       onTap: () => selected ? null : onSelect(provider, provider.series.first),
       child: Card(
           kind: ColorKinds.accent,
-          manner: selected ? ColorManners.minor : ColorManners.plain,
-          border: Border(opacity: selected ? 1 : .3),
+          manner: ColorManners.plain,
+          borderRadius: BorderRadius.vertical(
+              top: Radius.circular(this.first ? RADIUS_LARGE : RADIUS_SMALL),
+              bottom: Radius.circular(this.last ? RADIUS_LARGE : RADIUS_SMALL)),
+          border: Border(opacity: selected ? 0 : 0),
           padding: const RemInsets.all(1),
-          color: selColor.back.withTranslucency(.3),
+          color: selColor.back.withTranslucency(selected ? 0.4 : BTN_ALPHA),
           child: Row(
             gap: 1,
             children: [

@@ -2,6 +2,10 @@ import 'package:elbe/elbe.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:wad/util/util.dart';
 
+const BTN_ALPHA = .25;
+const RADIUS_SMALL = 3.0;
+const RADIUS_LARGE = 7.0;
+
 class WADButton extends StatefulWidget {
   final ColorKinds? kind;
   final void Function()? onTap;
@@ -72,7 +76,7 @@ class _AppleButtonBaseState extends State<WADButton> {
               manner: loud ? ColorManners.major : ColorManners.plain,
               color: loud
                   ? null
-                  : selColor.back.withTranslucency(disabled ? .25 : .125),
+                  : selColor.back.withTranslucency(disabled ? .125 : BTN_ALPHA),
               padding: RemInsets.all(widget._padding),
               child: Row(
                 cross: CrossAxisAlignment.center,
